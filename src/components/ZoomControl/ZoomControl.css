@@ -1,0 +1,24 @@
+.zoom-control-container {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    border: 0;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.65);
+    border-radius: 0;
+    z-index: 9999;
+    background-color: #fff;
+    user-select: none;
+}
+
+.zoom-tool {
+    text-align: center;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
