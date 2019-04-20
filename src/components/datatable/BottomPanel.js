@@ -9,8 +9,8 @@ import {
   HEADER_HEIGHT,
   LAYERS_PANEL_WIDTH,
   RIGHT_PANEL_WIDTH
-} from "../constants/layout";
-import { closeDataTable, resizeDataTable } from "../actions/dataTable";
+} from "../../constants/layout";
+import { closeDataTable, resizeDataTable } from "../../actions/dataTable";
 
 import "./BottomPanel.css";
 

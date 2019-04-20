@@ -12,139 +12,146 @@ import Divider from "@material-ui/core/Divider";
 import MoreIcon from "@material-ui/icons/MoreHoriz";
 import CreateIcon from "@material-ui/icons/Create";
 import ViewListIcon from "@material-ui/icons/ViewList";
-// import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FitToLayerIcon from "@material-ui/icons/CenterFocusStrong";
 // import SaveIcon from "@material-ui/icons/SaveAlt";
 // import OpenAsChartIcon from "@material-ui/icons/BarChart";
 
 const styles = (theme) => ({
-  button: {
-    float: "left",
-    padding: 4,
-    width: 32,
-    height: 32
-  },
-  divider: {
-    margin: `${theme.spacing.unit}px 0`
-  }
+	button: {
+		float: "left",
+		padding: 4,
+		width: 32,
+		height: 32
+	},
+	divider: {
+		margin: `${theme.spacing.unit}px 0`
+	}
 });
 
 export class LayerToolbarMoreMenu extends Component {
-  state = {
-    open: false,
-    anchorEl: null
-  };
+	state = {
+		open: false,
+		anchorEl: null
+	};
 
-  static propTypes = {
-    classes: PropTypes.object.isRequired,
-    onEdit: PropTypes.func,
-    onRemove: PropTypes.func,
-    toggleDataTable: PropTypes.func,
-    openAs: PropTypes.func,
-    downloadData: PropTypes.func
-  };
+	static propTypes = {
+		classes: PropTypes.object.isRequired,
+		onEdit: PropTypes.func,
+		onRemove: PropTypes.func,
+		toggleDataTable: PropTypes.func,
+		openAs: PropTypes.func,
+		downloadData: PropTypes.func
+	};
 
-  handleBtnClick = (e) => {
-    this.setState({
-      anchorEl: e.currentTarget,
-      open: true
-    });
-  };
+	handleBtnClick = (e) => {
+		this.setState({
+			anchorEl: e.currentTarget,
+			open: true
+		});
+	};
 
-  closeMenu = () => {
-    this.setState({
-      anchorEl: null,
-      open: false
-    });
-  };
+	closeMenu = () => {
+		this.setState({
+			anchorEl: null,
+			open: false
+		});
+	};
 
-  handleEditBtnClick = () => {
-    this.closeMenu();
-    this.props.onEdit();
-  };
+	handleEditBtnClick = () => {
+		this.closeMenu();
+		this.props.onEdit();
+	};
 
-  handleDataTableBtnClick = () => {
-    this.closeMenu();
-    this.props.toggleDataTable();
-  };
+	handleDataTableBtnClick = () => {
+		this.closeMenu();
+		this.props.toggleDataTable();
+	};
 
-  handleOpenAsChartBtnClick = () => {
-    this.closeMenu();
-    this.props.openAs("CHART");
-  };
+	handleFitToLayerBtnClick = () => {
+		this.closeMenu();
+		this.props.fitToLayer();
+	};
 
-  handleRemoveBtnClick = () => {
-    this.closeMenu();
-    this.props.onRemove();
-  };
+	handleOpenAsChartBtnClick = () => {
+		this.closeMenu();
+		this.props.openAs("CHART");
+	};
 
-  handleDownloadBtnClick = () => {
-    this.closeMenu();
-    this.props.downloadData();
-  };
+	handleRemoveBtnClick = () => {
+		this.closeMenu();
+		this.props.onRemove();
+	};
 
-  render() {
-    const {
-      classes,
-      onEdit,
-      onRemove,
-      toggleDataTable,
-      // openAs,
-      downloadData
-    } = this.props;
+	handleDownloadBtnClick = () => {
+		this.closeMenu();
+		this.props.downloadData();
+	};
 
-    const somethingAboveDivider = toggleDataTable || downloadData,
-      somethingBelowDivider = onRemove || onEdit,
-      showDivider = somethingAboveDivider && somethingBelowDivider;
+	render() {
+		const {
+			classes,
+			onEdit,
+			onRemove,
+			toggleDataTable,
+			fitToLayer,
+			// openAs,
+			downloadData
+		} = this.props;
 
-    if (!somethingAboveDivider && !somethingBelowDivider) {
-      return null;
-    }
+		const somethingAboveDivider = toggleDataTable || downloadData,
+			somethingBelowDivider = onRemove || onEdit,
+			showDivider = somethingAboveDivider && somethingBelowDivider;
 
-    return (
-      <Fragment>
-        <Tooltip title="More actions">
-          <IconButton className={classes.button} onClick={this.handleBtnClick}>
-            <MoreIcon />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          anchorEl={this.state.anchorEl}
-          getContentAnchorEl={null}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-          open={this.state.open}
-          onClose={this.closeMenu}
-          disableRestoreFocus={true} // Don't re-focus on the Tooltip after the dialog is closed
-        >
-          {toggleDataTable && (
-            <MenuItem onClick={this.handleDataTableBtnClick}>
-              <ListItemIcon>
-                <ViewListIcon />
-              </ListItemIcon>
-              <ListItemText primary="Data table" />
-            </MenuItem>
-          )}
+		if (!somethingAboveDivider && !somethingBelowDivider) {
+			return null;
+		}
 
-          {showDivider && <Divider className={classes.divider} light />}
-          {onEdit && (
-            <MenuItem onClick={this.handleEditBtnClick}>
-              <ListItemIcon>
-                <CreateIcon />
-              </ListItemIcon>
-              <ListItemText primary="Edit layer" />
-            </MenuItem>
-          )}
-          {/* {onRemove && (
-            <MenuItem onClick={this.handleRemoveBtnClick}>
-              <ListItemIcon>
-                <DeleteIcon />
-              </ListItemIcon>
-              <ListItemText primary={i18n.t("Remove layer")} />
-            </MenuItem>
-          )} */}
-        </Menu>
-      </Fragment>
-    );
-  }
+		return (
+			<Fragment>
+				<Tooltip title="More actions">
+					<IconButton className={classes.button} onClick={this.handleBtnClick}>
+						<MoreIcon />
+					</IconButton>
+				</Tooltip>
+				<Menu
+					anchorEl={this.state.anchorEl}
+					getContentAnchorEl={null}
+					anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+					open={this.state.open}
+					onClose={this.closeMenu}
+					disableRestoreFocus={true} // Don't re-focus on the Tooltip after the dialog is closed
+				>
+					{toggleDataTable && (
+						<MenuItem onClick={this.handleDataTableBtnClick}>
+							<ListItemIcon>
+								<ViewListIcon />
+							</ListItemIcon>
+							<ListItemText primary="Data table" />
+						</MenuItem>
+					)}
+
+					{showDivider && <Divider className={classes.divider} light />}
+					{onEdit && (
+						<MenuItem onClick={this.handleEditBtnClick}>
+							<ListItemIcon>
+								<CreateIcon />
+							</ListItemIcon>
+							<ListItemText primary="Edit layer" />
+						</MenuItem>
+					)}
+					{fitToLayer && (
+						<MenuItem onClick={this.handleFitToLayerBtnClick}>
+							<ListItemIcon>
+								<FitToLayerIcon />
+							</ListItemIcon>
+							<ListItemText primary="Fit to Layer" />
+						</MenuItem>
+					)}
+				</Menu>
+			</Fragment>
+		);
+	}
 }
 
 export default withStyles(styles)(LayerToolbarMoreMenu);

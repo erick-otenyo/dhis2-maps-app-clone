@@ -6,7 +6,7 @@ import ColumnHeader from "./ColumnHeader";
 import ColorCell from "./ColorCell";
 // import { selectOrgUnit, unselectOrgUnit } from "../../actions/orgUnits";
 // import { setDataFilter, clearDataFilter } from "../../actions/dataFilters";
-import { filterData } from "../util/filter";
+import { filterData } from "../../util/filter";
 
 import "./DataTable.css";
 

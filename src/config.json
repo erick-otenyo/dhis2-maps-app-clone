@@ -1,0 +1,18 @@
+{
+	"view": { "center": [1, 1], "zoom": 2, "maxZoom": 20, "minZoom": 10 },
+	"catalog": [
+		{
+			"name": "Vihiga Boundary",
+			"type": "geojson",
+			"url": "data/vihiga_county.geojson",
+			"layerType": "fill",
+			"style": {
+				"paint": {
+					"fill-color": "#088",
+					"fill-opacity": 0.8
+				}
+			},
+			"zoomOnEnable": true
+		}
+	]
+}
