@@ -18,7 +18,8 @@ export default {
 		overflow: "hidden",
 		textOverflow: "ellipsis",
 		fontWeight: 500,
-		lineHeight: "17px"
+		lineHeight: "17px",
+		userSelect: "none"
 	},
 	subheader: {
 		width: 195,

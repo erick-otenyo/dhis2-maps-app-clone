@@ -95,7 +95,7 @@ class LayerListItem extends SdkLayerListItem {
 		// get opacity value from layer paint definition
 		const opacity =
 			paint && paint[`${type}-opacity`] ? paint[`${type}-opacity`] : 1;
-		const { isExpanded, isMouseOver } = this.state;
+		const { isExpanded } = this.state;
 		const layerTitle = getLayerTitle(layer);
 		const isVisible = isLayerVisible(layer);
 		const canFitToLayer = metadata && metadata["bnd:bbox"];
@@ -107,7 +107,14 @@ class LayerListItem extends SdkLayerListItem {
 					this.props.connectDropTarget(node);
 				}}
 			>
-				<Card className={classes.card} data-test="layercard">
+				<Card
+					className={classes.card}
+					data-test="layercard"
+					style={{
+						border: isOver ? "2px dashed #63C56F" : "none",
+						opacity: isDragging ? 0 : 1
+					}}
+				>
 					<CardHeader
 						classes={{
 							root: classes.header,
@@ -117,11 +124,11 @@ class LayerListItem extends SdkLayerListItem {
 						title={layerTitle}
 						action={[
 							<SortableHandle
+								key="handle"
 								ref={(instance) => {
 									const node = findDOMNode(instance);
 									this.props.connectDragSource(node);
 								}}
-								key="handle"
 							/>,
 							<Tooltip key="expand" title={isExpanded ? "Collapse" : "Expand"}>
 								<IconButton
