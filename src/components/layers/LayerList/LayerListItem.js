@@ -83,14 +83,19 @@ class LayerListItem extends SdkLayerListItem {
 		this.setState({ isExpanded: !this.state.isExpanded });
 	};
 
-	handleMouseEnter = () => {
-		this.setState({ isMouseOver: true });
+	handleDataTableToggle = () => {
+		const {
+			sources,
+			layer: { source, id }
+		} = this.props;
+
+		const sourceType = sources[source].type;
+
+		this.props.toggleDataTable(sourceType, source, id);
 	};
-	handleMouseLeave = () => {
-		this.setState({ isMouseOver: false });
-	};
+
 	render() {
-		const { layer, isOver, isDragging, classes, toggleDataTable } = this.props;
+		const { layer, isOver, isDragging, classes } = this.props;
 		const { type, paint, metadata } = layer;
 		// get opacity value from layer paint definition
 		const opacity =
@@ -99,6 +104,7 @@ class LayerListItem extends SdkLayerListItem {
 		const layerTitle = getLayerTitle(layer);
 		const isVisible = isLayerVisible(layer);
 		const canFitToLayer = metadata && metadata["bnd:bbox"];
+		const hasDataTable = metadata && metadata["bnd:has-table"];
 
 		return this.props.connectDragPreview(
 			<div
@@ -148,9 +154,9 @@ class LayerListItem extends SdkLayerListItem {
 								opacity={opacity}
 								isVisible={isVisible}
 								fitToLayer={canFitToLayer && this.handleFitToLayerExtent}
-								removeLayer={this.removeLayer}
+								onRemove={this.removeLayer}
 								// onEdit={() => ({})}
-								toggleDataTable={() => toggleDataTable(layer.id)}
+								toggleDataTable={hasDataTable && this.handleDataTableToggle}
 								toggleLayerVisibility={this.toggleLayerVisibility}
 								onOpacityChange={this.handleOpacityChange}
 							/>
@@ -169,10 +175,10 @@ LayerListItem = DropTarget(types, layerListItemTarget, collectDrop)(
 // TODO: Add proptypes
 
 const mapStateToProps = (state, props) => {
-	const { size, projection } = state.mapinfo;
 	return {
-		mapSize: size,
-		mapProjection: projection
+		mapSize: state.mapinfo.size,
+		mapProjection: state.mapinfo.projection,
+		sources: state.map.sources
 	};
 };
 

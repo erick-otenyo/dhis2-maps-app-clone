@@ -73,11 +73,6 @@ export class LayerToolbarMoreMenu extends Component {
 		this.props.fitToLayer();
 	};
 
-	handleRemoveLayer = () => {
-		this.closeMenu();
-		this.props.removeLayer();
-	};
-
 	handleOpenAsChartBtnClick = () => {
 		this.closeMenu();
 		this.props.openAs("CHART");
@@ -99,12 +94,10 @@ export class LayerToolbarMoreMenu extends Component {
 			onEdit,
 			onRemove,
 			toggleDataTable,
-			fitToLayer,
-			removeLayer,
-			downloadData
+			fitToLayer
 		} = this.props;
 
-		const somethingAboveDivider = toggleDataTable || downloadData,
+		const somethingAboveDivider = toggleDataTable,
 			somethingBelowDivider = onRemove || onEdit,
 			showDivider = somethingAboveDivider && somethingBelowDivider;
 
@@ -137,6 +130,7 @@ export class LayerToolbarMoreMenu extends Component {
 					)}
 
 					{showDivider && <Divider className={classes.divider} light />}
+
 					{onEdit && (
 						<MenuItem onClick={this.handleEditBtnClick}>
 							<ListItemIcon>
@@ -154,7 +148,7 @@ export class LayerToolbarMoreMenu extends Component {
 						</MenuItem>
 					)}
 
-					<MenuItem onClick={this.handleRemoveLayer}>
+					<MenuItem onClick={this.handleRemoveBtnClick}>
 						<ListItemIcon>
 							<DeleteIcon />
 						</ListItemIcon>

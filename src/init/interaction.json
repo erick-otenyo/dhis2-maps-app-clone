@@ -6,9 +6,7 @@
 		"style": {
 			"paint": { "line-color": "red" }
 		},
-		"metadata": {
-			"bnd:hide-layerlist": true
-		}
+		"visibleInList": false
 	},
 	{
 		"type": "geojson",
@@ -22,9 +20,7 @@
 				"circle-stroke-width": 4
 			}
 		},
-		"metadata": {
-			"bnd:hide-layerlist": true
-		}
+		"visibleInList": false
 	},
 	{
 		"type": "geojson",
@@ -38,8 +34,6 @@
 				"circle-stroke-width": 4
 			}
 		},
-		"metadata": {
-			"bnd:hide-layerlist": true
-		}
+		"visibleInList": false
 	}
 ]

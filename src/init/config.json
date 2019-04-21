@@ -24,7 +24,8 @@
 					"circle-color": "red",
 					"circle-radius": 5
 				}
-			}
+			},
+			"hasTable": true
 		}
 	]
 }

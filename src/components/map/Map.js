@@ -92,7 +92,8 @@ class Map extends Component {
 			type,
 			filter,
 			zoomOnEnable,
-			metadata
+			visibleInList,
+			hasTable
 		} = item;
 
 		const { dispatch } = this.props;
@@ -112,10 +113,18 @@ class Map extends Component {
 		const paint = style && style.paint ? style.paint : {};
 		const layout = style && style.layout ? style.layout : {};
 
-		const layerMetadata = { ...metadata };
+		const metadata = {};
 
 		if (name) {
-			layerMetadata["bnd:title"] = name;
+			metadata["bnd:title"] = name;
+		}
+
+		if (visibleInList === false) {
+			metadata["bnd:hide-layerlist"] = true;
+		}
+
+		if (hasTable) {
+			metadata["bnd:has-table"] = true;
 		}
 
 		dispatch(mapActions.addSource(source, { type: type, data: features }));
@@ -128,17 +137,11 @@ class Map extends Component {
 				paint,
 				layout,
 				filter,
-				metadata: layerMetadata
+				metadata
 			})
 		);
 		if (url) {
-			this.fetchFeaturesAndUpdate(
-				url,
-				source,
-				layerId,
-				layerMetadata,
-				zoomOnEnable
-			);
+			this.fetchFeaturesAndUpdate(url, source, layerId, metadata, zoomOnEnable);
 		}
 	};
 
@@ -349,7 +352,7 @@ Map.defaultProps = {
 const mapStateToProps = (state) => ({
 	layersPanelOpen: state.ui.layersPanelOpen,
 	rightPanelOpen: state.ui.rightPanelOpen,
-	dataTableOpen: state.dataTable,
+	dataTableOpen: state.dataTable.isOpen,
 	dataTableHeight: state.ui.dataTableHeight,
 	mapSize: state.mapinfo.size,
 	mapProjection: state.mapinfo.projection
