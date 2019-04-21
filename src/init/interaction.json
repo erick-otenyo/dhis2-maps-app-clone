@@ -1,0 +1,45 @@
+[
+	{
+		"type": "geojson",
+		"id": "selected_polygon_feature",
+		"layerType": "line",
+		"style": {
+			"paint": { "line-color": "red" }
+		},
+		"metadata": {
+			"bnd:hide-layerlist": true
+		}
+	},
+	{
+		"type": "geojson",
+		"id": "selected_point_feature",
+		"layerType": "circle",
+		"style": {
+			"paint": {
+				"circle-opacity": 0.000001,
+				"circle-radius": 17,
+				"circle-stroke-color": "#fbb03b",
+				"circle-stroke-width": 4
+			}
+		},
+		"metadata": {
+			"bnd:hide-layerlist": true
+		}
+	},
+	{
+		"type": "geojson",
+		"id": "geolocation_layer",
+		"layerType": "circle",
+		"style": {
+			"paint": {
+				"circle-opacity": 0.000001,
+				"circle-radius": 17,
+				"circle-stroke-color": "#fbb03b",
+				"circle-stroke-width": 4
+			}
+		},
+		"metadata": {
+			"bnd:hide-layerlist": true
+		}
+	}
+]
