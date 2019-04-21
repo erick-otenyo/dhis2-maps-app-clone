@@ -73,6 +73,11 @@ export class LayerToolbarMoreMenu extends Component {
 		this.props.fitToLayer();
 	};
 
+	handleRemoveLayer = () => {
+		this.closeMenu();
+		this.props.removeLayer();
+	};
+
 	handleOpenAsChartBtnClick = () => {
 		this.closeMenu();
 		this.props.openAs("CHART");
@@ -95,7 +100,7 @@ export class LayerToolbarMoreMenu extends Component {
 			onRemove,
 			toggleDataTable,
 			fitToLayer,
-			// openAs,
+			removeLayer,
 			downloadData
 		} = this.props;
 
@@ -148,6 +153,13 @@ export class LayerToolbarMoreMenu extends Component {
 							<ListItemText primary="Fit to Layer" />
 						</MenuItem>
 					)}
+
+					<MenuItem onClick={this.handleRemoveLayer}>
+						<ListItemIcon>
+							<DeleteIcon />
+						</ListItemIcon>
+						<ListItemText primary="Remove Layer" />
+					</MenuItem>
 				</Menu>
 			</Fragment>
 		);
