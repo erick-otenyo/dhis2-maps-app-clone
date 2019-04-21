@@ -13,7 +13,14 @@ import {
 	RIGHT_PANEL_WIDTH
 } from "../../constants/layout";
 import slugify from "../../util/slugify";
-import mapConfig from "../../config.json";
+import mapConfig from "../../init/config.json";
+import interactionConfig from "../../init/interaction.json";
+import { getClickedLayerFeatures } from "../../util/interaction";
+import { SOURCE_KEY } from "../../constants/map";
+import {
+	setSelectedFeature,
+	clearSelectedFeature
+} from "../../actions/interaction";
 
 import "@boundlessgeo/sdk/stylesheet/sdk.scss";
 import "./Map.css";
@@ -40,6 +47,12 @@ const styles = {
 		}
 	}
 };
+
+const POLYGON_INTERACT_LAYER = "selected_polygon_feature";
+const POINT_INTERACT_LAYER = "selected_point_feature";
+
+const POLYGON_INTERACT_SOURCE = `${POLYGON_INTERACT_LAYER}-${SOURCE_KEY}`;
+const POINT_INTERACT_SOURCE = `${POINT_INTERACT_LAYER}-${SOURCE_KEY}`;
 
 class Map extends Component {
 	constructor(props) {
@@ -78,16 +91,18 @@ class Map extends Component {
 			data,
 			type,
 			filter,
-			zoomOnEnable
+			zoomOnEnable,
+			metadata
 		} = item;
 
 		const { dispatch } = this.props;
 
 		let layerId = id;
-		if (!layerId) {
+
+		if (!layerId && name) {
 			layerId = slugify(name);
 		}
-		const source = `${layerId}-source`;
+		const source = `${layerId}-${SOURCE_KEY}`;
 
 		const features = {
 			type: "FeatureCollection",
@@ -97,9 +112,11 @@ class Map extends Component {
 		const paint = style && style.paint ? style.paint : {};
 		const layout = style && style.layout ? style.layout : {};
 
-		const metadata = {
-			"bnd:title": name
-		};
+		const layerMetadata = { ...metadata };
+
+		if (name) {
+			layerMetadata["bnd:title"] = name;
+		}
 
 		dispatch(mapActions.addSource(source, { type: type, data: features }));
 
@@ -111,11 +128,17 @@ class Map extends Component {
 				paint,
 				layout,
 				filter,
-				metadata
+				metadata: layerMetadata
 			})
 		);
 		if (url) {
-			this.fetchFeaturesAndUpdate(url, source, layerId, metadata, zoomOnEnable);
+			this.fetchFeaturesAndUpdate(
+				url,
+				source,
+				layerId,
+				layerMetadata,
+				zoomOnEnable
+			);
 		}
 	};
 
@@ -169,6 +192,7 @@ class Map extends Component {
 
 	configureMap = () => {
 		this.addBaseMap();
+
 		const { mapConfig } = this.props;
 
 		const { view, catalog } = mapConfig;
@@ -188,6 +212,15 @@ class Map extends Component {
 				}
 			});
 		}
+
+		this.addInteractionLayers();
+	};
+
+	addInteractionLayers = () => {
+		const { interactionConfig } = this.props;
+		interactionConfig.forEach((item) => {
+			this.addGeojsonLayer(item);
+		});
 	};
 
 	componentDidUpdate(prevProps, prevState) {
@@ -202,15 +235,71 @@ class Map extends Component {
 			prevProps.dataTableOpen !== dataTableOpen ||
 			prevProps.layersPanelOpen !== layersPanelOpen ||
 			prevProps.rightPanelOpen !== rightPanelOpen
-		)
+		) {
 			// dispatch a resize event so ol map resizes
 			window.dispatchEvent(resizeEvent);
+		}
 	}
 
 	fitExtent = (extent) => {
 		const { dispatch, mapSize, mapProjection } = this.props;
 
 		dispatch(mapActions.fitExtent(extent, mapSize, mapProjection));
+	};
+
+	updateInteractionSource = (feature) => {
+		const { dispatch } = this.props;
+		const { geometry } = feature;
+
+		if (geometry) {
+			const { type } = geometry;
+			// if the returned feature is a polygon
+			if (type === "MultiPolygon" || type === "Polygon") {
+				dispatch(mapActions.addFeatures(POLYGON_INTERACT_SOURCE, [feature]));
+			}
+			// if the returned feature is a point
+			if (type === "MultiPoint" || type === "Point") {
+				dispatch(mapActions.addFeatures(POINT_INTERACT_SOURCE, [feature]));
+			}
+		}
+	};
+
+	clearInteractionSources = () => {
+		this.props.dispatch(mapActions.removeFeatures(POLYGON_INTERACT_SOURCE));
+		this.props.dispatch(mapActions.removeFeatures(POINT_INTERACT_SOURCE));
+	};
+
+	orderInteractionsLayerToTop = () => {
+		this.props.dispatch(mapActions.orderLayer(POLYGON_INTERACT_LAYER));
+		this.props.dispatch(mapActions.orderLayer(POINT_INTERACT_LAYER));
+	};
+
+	handleMapClick = (map, xy, featuresPromise) => {
+		const { dispatch } = this.props;
+
+		featuresPromise.then((featureGroups) => {
+			// clear interaction data sources to remove the selected feature from map
+			this.clearInteractionSources();
+
+			// clear selected feature
+			dispatch(clearSelectedFeature());
+
+			// create an object of results of visible && queryable layers
+			const layersFeatures = getClickedLayerFeatures(featureGroups, SOURCE_KEY);
+
+			// get the top most selected feature
+			const topSelectedFeature = layersFeatures[0];
+
+			if (topSelectedFeature) {
+				const { feature } = topSelectedFeature;
+
+				// update interaction source to display  selected feature on map
+				this.updateInteractionSource(feature);
+
+				// set selected feature
+				dispatch(setSelectedFeature(topSelectedFeature));
+			}
+		});
 	};
 
 	render() {
@@ -233,7 +322,7 @@ class Map extends Component {
 		return (
 			<div style={style}>
 				<div id="dhis2-maps-container" className={classes.mapContainer}>
-					<OlMap>
+					<OlMap includeFeaturesOnClick onClick={this.handleMapClick}>
 						<ZoomControl />
 					</OlMap>
 				</div>
@@ -248,11 +337,13 @@ Map.propTypes = {
 	rightPanelOpen: PropTypes.bool,
 	layersPanelOpen: PropTypes.bool,
 	mapConfig: PropTypes.object,
+	interactionConfig: PropTypes.array,
 	classes: PropTypes.object.isRequired
 };
 
 Map.defaultProps = {
-	mapConfig: mapConfig
+	mapConfig: mapConfig,
+	interactionConfig: interactionConfig
 };
 
 const mapStateToProps = (state) => ({
