@@ -6,11 +6,9 @@ import "./DataTable.css";
 // Using react component to keep sorting state, which is only used within the data table.
 class DataTable extends Component {
 	render() {
-		const { data } = this.props;
+		// const { data } = this.props;
 
-		console.log(data);
-
-		return <div>Hello table</div>;
+		return <div style={{ userSelect: "none" }}>Hello table</div>;
 	}
 }
 

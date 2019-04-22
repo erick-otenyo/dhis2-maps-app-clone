@@ -21,6 +21,7 @@ import {
 	setSelectedFeature,
 	clearSelectedFeature
 } from "../../actions/interaction";
+import { openRightPanel, closeRightPanel } from "../../actions/ui";
 
 import "@boundlessgeo/sdk/stylesheet/sdk.scss";
 import "./Map.css";
@@ -278,7 +279,7 @@ class Map extends Component {
 	};
 
 	handleMapClick = (map, xy, featuresPromise) => {
-		const { dispatch } = this.props;
+		const { dispatch, rightPanelOpen } = this.props;
 
 		featuresPromise.then((featureGroups) => {
 			// clear interaction data sources to remove the selected feature from map
@@ -301,6 +302,14 @@ class Map extends Component {
 
 				// set selected feature
 				dispatch(setSelectedFeature(topSelectedFeature));
+
+				if (!rightPanelOpen) {
+					dispatch(openRightPanel());
+				}
+			} else {
+				if (rightPanelOpen) {
+					dispatch(closeRightPanel());
+				}
 			}
 		});
 	};

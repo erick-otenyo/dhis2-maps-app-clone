@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import { HEADER_HEIGHT, RIGHT_PANEL_WIDTH } from "../../constants/layout";
+import FeatureInfo from "./FeatureInfo";
 
 const styles = (theme) => ({
 	panel: {
@@ -43,7 +44,7 @@ class RightPanel extends Component {
 				anchor="right"
 				classes={{ paper: classes.panel }}
 			>
-				<div>Hello Right Panel</div>
+				<FeatureInfo />
 			</Drawer>
 		);
 	}
