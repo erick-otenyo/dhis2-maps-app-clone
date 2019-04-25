@@ -27,8 +27,12 @@ const styles = (theme) => ({
 			backgroundColor: theme.palette.background.default
 		}
 	},
-	cell: { wordBreak: "break-word", width: "min-content" },
-	cellBold: { fontWeight: "700" },
+	cell: {
+		wordBreak: "break-word",
+		width: "min-content",
+		fontSize: 11
+	},
+	cellBold: { fontWeight: "700", fontSize: 11, paddingLeft: 4 },
 	button: { width: "100%" }
 });
 
@@ -44,7 +48,7 @@ const FeatureInfo = (props) => {
 					<TableCell padding="none" align="left" className={classes.cellBold}>
 						{key}
 					</TableCell>
-					<TableCell padding="checkbox" align="left" className={classes.cell}>
+					<TableCell padding="none" align="left" className={classes.cell}>
 						{value}
 					</TableCell>
 				</TableRow>
