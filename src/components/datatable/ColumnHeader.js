@@ -12,10 +12,10 @@ const ColumnHeader = ({ dataKey, label, type, sortBy, sortDirection }) => (
     <span className="ColumnHeader-label" title={label}>
       {label}
     </span>
-    {sortBy === dataKey ? (
+    {/* {sortBy === dataKey ? (
       <SortIndicator sortDirection={sortDirection} />
     ) : null}
-    <FilterInput type={type} dataKey={dataKey} />
+    <FilterInput type={type} dataKey={dataKey} /> */}
   </div>
 );
 

@@ -43,17 +43,17 @@ const ui = (state = defaultState, action) => {
 				rightPanelOpen: false
 			};
 
-		// case types.LAYERS_DIALOG_OPEN:
-		//   return {
-		//     ...state,
-		//     layersDialogOpen: true
-		//   };
+		case types.LAYERS_DIALOG_OPEN:
+			return {
+				...state,
+				layersDialogOpen: true
+			};
 
-		// case types.LAYERS_DIALOG_CLOSE:
-		//   return {
-		//     ...state,
-		//     layersDialogOpen: false
-		//   };
+		case types.LAYERS_DIALOG_CLOSE:
+			return {
+				...state,
+				layersDialogOpen: false
+			};
 
 		case types.DATA_TABLE_RESIZE:
 			return {

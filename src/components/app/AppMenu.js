@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 
+import AddLayer from "../layers/AddLayer";
+
 const styles = (theme) => ({
 	toolbar: {
 		position: "absolute",
@@ -17,7 +19,6 @@ const styles = (theme) => ({
 		boxShadow: `0 1px 1px 0 ${theme.palette.shadow}`
 	},
 	divider: {
-		// TODO: make this a standalone component for re-use as a generic vertical divider
 		height: "100%",
 		borderRight: `1px solid ${theme.palette.divider}`,
 		marginRight: theme.spacing.unit
@@ -26,7 +27,8 @@ const styles = (theme) => ({
 
 export const AppMenu = ({ classes }) => (
 	<Toolbar variant="dense" className={classes.toolbar}>
-		Hello World
+		<AddLayer />
+		<span className={classes.divider} />
 	</Toolbar>
 );
 

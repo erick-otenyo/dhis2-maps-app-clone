@@ -22,6 +22,7 @@ import {
 	clearSelectedFeature
 } from "../../actions/interaction";
 import { openRightPanel, closeRightPanel } from "../../actions/ui";
+import LayerCatalog from "../layers/LayerCatalog";
 
 import "@boundlessgeo/sdk/stylesheet/sdk.scss";
 import "./Map.css";
@@ -337,6 +338,7 @@ class Map extends Component {
 					<OlMap includeFeaturesOnClick onClick={this.handleMapClick}>
 						<ZoomControl />
 					</OlMap>
+					<LayerCatalog />
 				</div>
 			</div>
 		);

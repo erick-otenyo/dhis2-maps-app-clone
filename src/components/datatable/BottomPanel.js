@@ -28,21 +28,6 @@ class BottomPanel extends Component {
 		this.state = { data: null, rendered: false };
 	}
 
-	// componentDidUpdate(prevProps, prevState) {
-	// 	const { dataTable, sources } = this.props;
-	// 	const { rendered } = this.state;
-
-	// 	if (prevState.rendered !== rendered) {
-	// 		if (dataTable.isOpen) {
-	// 			const source = sources[dataTable.sourceName];
-
-	// 			if (source.type === "geojson" && source.data) {
-	// 				this.setState({ data: source.data });
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	render() {
 		const {
 			layersPanelOpen,
@@ -52,8 +37,7 @@ class BottomPanel extends Component {
 			width,
 			height,
 			resizeDataTable,
-			closeDataTable,
-			sources
+			closeDataTable
 		} = this.props;
 
 		if (dataTable.isOpen) {
@@ -69,17 +53,6 @@ class BottomPanel extends Component {
 				left: layersWidth,
 				right: rightWidth
 			};
-
-			const source = sources[dataTable.sourceName];
-			const isLoading = dataTable.isLoading;
-
-			let data;
-
-			if (source.type === "geojson" && source.data) {
-				data = source.data.features;
-			} else {
-				data = dataTable.remoteData;
-			}
 
 			//TODO: should component update ??
 
@@ -100,12 +73,7 @@ class BottomPanel extends Component {
 						onResize={(height) => this.onResize(height)}
 						onResizeEnd={(height) => resizeDataTable(height)}
 					/>
-					<DataTable
-						isLoading={isLoading}
-						data={data}
-						width={tableWidth}
-						height={tableHeight}
-					/>
+					<DataTable width={tableWidth} height={tableHeight} />
 				</div>
 			);
 		}
