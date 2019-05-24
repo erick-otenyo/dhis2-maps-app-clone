@@ -11,5 +11,5 @@ It has a clean UI as you can see from the screenshot below.
 The maps app is intergrated with DHIS2 as a DHIS2 app, and thus it can not work outside the DHIS2. I wanted to have it run as a standalone
 web mapping application, which you can just install, set a few configurations and it runs generically, outside of DHIS2.
 
-I peeked into the (code)[https://github.com/dhis2/maps-app] and decided to build a generic app out of it. This repo is the product and I am
+I peeked into the [code](https://github.com/dhis2/maps-app) and decided to build a generic app out of it. This repo is the product and I am
 actively working on it
